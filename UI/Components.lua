@@ -3,7 +3,6 @@
 --   Helper functions: toggle, section header, tab system
 -- ================================================
 
-local TweenService = game:GetService("TweenService")
 local tween       = _G.KalssUI.tween
 local makeCorner  = _G.KalssUI.makeCorner
 local RAINBOW     = _G.KalssUI.RAINBOW
@@ -103,6 +102,110 @@ local function makeTabFrame(name)
     f.ZIndex = 2
     f.Parent = ContentArea
     Tabs[name] = f
+    return f
+end
+
+-- ================================================
+-- ACTIVATE TAB
+-- ================================================
+local function activateTab(name)
+    if _G.KalssUI.ActiveTab == name then return end
+    _G.KalssUI.ActiveTab = name
+
+    for tabName, tabUI in pairs(TabButtons) do
+        local isActive = (tabName == name)
+        tween(tabUI.btn,   {BackgroundColor3 = isActive and Color3.fromRGB(22, 22, 28) or Color3.fromRGB(20, 20, 24)}, 0.2)
+        tween(tabUI.bar,   {BackgroundTransparency = isActive and 0 or 1}, 0.2)
+        tween(tabUI.icon,  {TextColor3 = isActive and tabUI.color or Color3.fromRGB(90, 90, 110)}, 0.2)
+        tween(tabUI.label, {TextColor3 = isActive and Color3.fromRGB(220, 220, 230) or Color3.fromRGB(90, 90, 110)}, 0.2)
+    end
+
+    for tabName, frame in pairs(Tabs) do
+        frame.Visible = (tabName == name)
+    end
+end
+
+-- ================================================
+-- TAB BUTTON FACTORY
+-- FIX: Pakai AbsolutePosition manual, bukan UIListLayout
+-- ================================================
+local TAB_DATA = {
+    { name = "Home",     icon = "⌂", color = RAINBOW[5] },
+    { name = "AutoFarm", icon = "⚡", color = RAINBOW[2] },
+    { name = "ESP",      icon = "◈",  color = RAINBOW[4] },
+    { name = "Settings", icon = "⚙", color = RAINBOW[6] },
+}
+
+-- Hapus UIListLayout dan UIPadding lama dari Sidebar supaya tidak konflik
+for _, child in ipairs(Sidebar:GetChildren()) do
+    if child:IsA("UIListLayout") or child:IsA("UIPadding") then
+        child:Destroy()
+    end
+end
+
+for i, data in ipairs(TAB_DATA) do
+    local btn = Instance.new("TextButton")
+    btn.Name = data.name .. "Tab"
+    btn.Size = UDim2.new(1, -16, 0, 36)
+    -- Posisi manual: mulai dari y=10, tiap tab jarak 40px
+    btn.Position = UDim2.new(0, 8, 0, 10 + (i - 1) * 40)
+    btn.BackgroundColor3 = Color3.fromRGB(20, 20, 24)
+    btn.Text = ""
+    btn.BorderSizePixel = 0
+    btn.ZIndex = 3
+    btn.Parent = Sidebar
+    makeCorner(btn, 8)
+
+    local ActiveBar = Instance.new("Frame")
+    ActiveBar.Size = UDim2.new(0, 3, 0.6, 0)
+    ActiveBar.Position = UDim2.new(0, 0, 0.2, 0)
+    ActiveBar.BackgroundColor3 = data.color
+    ActiveBar.BorderSizePixel = 0
+    ActiveBar.BackgroundTransparency = 1
+    ActiveBar.ZIndex = 4
+    ActiveBar.Parent = btn
+    makeCorner(ActiveBar, 2)
+
+    local Icon = Instance.new("TextLabel")
+    Icon.Size = UDim2.new(0, 22, 1, 0)
+    Icon.Position = UDim2.new(0, 8, 0, 0)
+    Icon.BackgroundTransparency = 1
+    Icon.Text = data.icon
+    Icon.TextColor3 = Color3.fromRGB(90, 90, 110)
+    Icon.TextSize = 14
+    Icon.Font = Enum.Font.GothamBold
+    Icon.ZIndex = 4
+    Icon.Parent = btn
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(1, -34, 1, 0)
+    Label.Position = UDim2.new(0, 32, 0, 0)
+    Label.BackgroundTransparency = 1
+    Label.Text = data.name
+    Label.TextColor3 = Color3.fromRGB(90, 90, 110)
+    Label.TextSize = 11
+    Label.Font = Enum.Font.GothamBold
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.ZIndex = 4
+    Label.Parent = btn
+
+    TabButtons[data.name] = {btn = btn, bar = ActiveBar, icon = Icon, label = Label, color = data.color}
+
+    btn.MouseButton1Click:Connect(function()
+        activateTab(data.name)
+    end)
+end
+
+-- ================================================
+-- SIMPAN KE GLOBAL
+-- ================================================
+_G.KalssUI.sectionHeader = sectionHeader
+_G.KalssUI.makeToggle    = makeToggle
+_G.KalssUI.makeTabFrame  = makeTabFrame
+_G.KalssUI.activateTab   = activateTab
+
+-- Default tab
+activateTab("Home")    Tabs[name] = f
     return f
 end
 
