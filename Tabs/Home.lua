@@ -7,10 +7,10 @@ local RunService  = game:GetService("RunService")
 local Players     = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-local makeTabFrame  = _G.KalssUI.makeTabFrame
-local RAINBOW       = _G.KalssUI.RAINBOW
-local makeCorner    = _G.KalssUI.makeCorner
-local CONFIG        = _G.KalssUI.CONFIG
+local makeTabFrame = _G.KalssUI.makeTabFrame
+local RAINBOW      = _G.KalssUI.RAINBOW
+local makeCorner   = _G.KalssUI.makeCorner
+local CONFIG       = _G.KalssUI.CONFIG
 
 local HomeFrame = makeTabFrame("Home")
 
@@ -118,6 +118,3 @@ RunService.Heartbeat:Connect(function()
         lastTick = tick()
     end
 end)
-
--- Aktifkan tab ini sebagai default
-_G.KalssUI.activateTab("Home")
