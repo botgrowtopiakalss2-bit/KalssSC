@@ -4,7 +4,7 @@
 --   Ganti GITHUB_RAW_URL dengan link Raw GitHub kamu
 -- ================================================
 
-local GITHUB_RAW_URL = "https://raw.githubusercontent.com/USERNAME/REPO_NAME/main/MainScript.lua"
+local GITHUB_RAW_URL = "https://github.com/botgrowtopiakalss2-bit/KalssSC/blob/main/MainScript.lua"
 --                                                    ^^^^^^^^  ^^^^^^^^^^ ^^^^
 --                                                    Ganti dengan username, repo, dan branch kamu
 
