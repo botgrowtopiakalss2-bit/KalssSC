@@ -1,20 +1,16 @@
 -- ================================================
 --   Loader.lua
---   Script ini yang kamu paste di Roblox Executor
---   Ganti GITHUB_RAW_URL dengan link Raw GitHub kamu
+--   Paste INI di Delta Executor lalu Execute
 -- ================================================
 
-local GITHUB_RAW_URL = "https://github.com/botgrowtopiakalss2-bit/KalssSC/blob/main/MainScript.lua"
---                                                    ^^^^^^^^  ^^^^^^^^^^ ^^^^
---                                                    Ganti dengan username, repo, dan branch kamu
+local GITHUB_RAW_URL = "https://raw.githubusercontent.com/botgrowtopiakalss2-bit/KalssSC/main/MainScript.lua"
 
--- Load dan jalankan script dari GitHub
 local success, result = pcall(function()
     return loadstring(game:HttpGet(GITHUB_RAW_URL, true))()
 end)
 
 if success then
-    print("[Loader] ✅ Script berhasil diload dari GitHub!")
+    print("[KalssSC] ✅ Loaded!")
 else
-    warn("[Loader] ❌ Gagal load script: " .. tostring(result))
+    warn("[KalssSC] ❌ Error: " .. tostring(result))
 end
